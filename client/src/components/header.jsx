@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { addMenu } from "../hooks/user.js";
 import useStore from "../Zustand/store.js";
+import { api } from "../lib/api.js";
 
 const menuSchema = z.object({
   menuName: z.string().max(50, "Menu name should not exceed 50 characters"),
@@ -16,7 +17,7 @@ const menuSchema = z.object({
 
 export const getMenus = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/getMenu");
+    const response = await api.get("/getMenu");
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -107,24 +108,26 @@ const Options = () => {
             </h1>
             <p className="text-[#BBBBBB] font-kellySlab  text-pretty px-2">
               Please take a look at our menu featuring food, drinks, and brunch.
-              If you'd like to  <br className="hidden lg:block" /> place an order, use the "Order Online" button
-              located below the menu.
+              If you'd like to <br className="hidden lg:block" /> place an
+              order, use the "Order Online" button located below the menu.
             </p>
           </div>
         </div>
       </header>
 
       <main className="bg-[url(/design.png)] font-oswald">
-        <div className="flex gap-3 justify-center py-3 overflow-hidden px-2">
-          {menus.slice(0, 3).map((menu) => (
-            <button
-              key={menu._id}
-              onClick={() => handleMenuClick(menu._id)}
-              className="text-sm font-bold bg-[#000000] text-white border-[1px] border-[#0796EF] py-[10px] w-24 hover:bg-[#0796EF] transition duration-300"
-            >
-              {menu.menuName}
-            </button>
-          ))}
+        <div className="flex justify-center py-3 px-2 w-full">
+          <div className="flex max-w-96 gap-3 overflow-x-auto scrollbar-hide">
+            {menus.map((menu) => (
+              <button
+                key={menu._id}
+                onClick={() => handleMenuClick(menu._id)}
+                className="text-sm shrink-0 font-bold bg-[#000000] text-white border-[1px] border-[#0796EF] py-[10px] w-24 hover:bg-[#0796EF] transition duration-300"
+              >
+                {menu.menuName}
+              </button>
+            ))}
+          </div>
 
           <button
             className="text-sm font-bold mx-1 bg-[#000000] text-white border-[1px] border-[#0796EF] w-24 hover:bg-[#0796EF] transition duration-300"

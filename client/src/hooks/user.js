@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { api } from "../lib/api";
 
 export const addMenu = ()=>{
     const addMenuMutation = useMutation({
         mutationFn:async (data)=>{
-            const respones = await axios.post('http://localhost:4000/addMenu',data)
+            const respones = await api.post('/addMenu',data)
             return respones.data
         },
         onError: (error) => {

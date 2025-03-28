@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import useStore from "../Zustand/store";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "../lib/api";
 
 const Menus = () => {
   const { selectedMenuId } = useStore();
@@ -32,8 +32,8 @@ const Menus = () => {
     const fetchMenuDetails = async () => {
       if (!selectedMenuId) return;
       try {
-        const response = await axios.get(
-          `http://localhost:4000/getMenuDetails/${selectedMenuId}`
+        const response = await api.get(
+          `/getMenuDetails/${selectedMenuId}`
         );
         setMenuDetails(response.data);
       } catch (error) {
@@ -57,7 +57,7 @@ const Menus = () => {
   const onSubmit = async (data) => {
     console.log("Submitted data:", data);
     try {
-      const response = await axios.post(`http://localhost:4000/addMenuItem`, {
+      const response = await api.post(`/addMenuItem`, {
         itemName: data.itemName,
         description: data.description,
         price: data.price,
